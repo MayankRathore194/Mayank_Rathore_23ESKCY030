@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Search - Pharmacy Inventory{% endblock %}
+
+{% block content %}
+<h1>Search Medicine</h1>
+
+<form method="GET" class="form-card form-inline">
+  <input type="text" name="medicine_name" placeholder="e.g. Paracetamol"
+         value="{{ query or '' }}" required autofocus />
+  <button type="submit" class="btn">Search</button>
+</form>
+
+{% if result %}
+<div class="result-card">
+  <h2>{{ result.medicine_name }}</h2>
+  <p>In-date stock: <strong>{{ result.sellable_stock }}</strong></p>
+  <p>Status:
+    {% if result.available %}
+      <span class="badge badge-valid">Available</span>
+    {% else %}
+      <span class="badge badge-expired">Not available</span>
+    {% endif %}
+  </p>
+</div>
+{% endif %}
+{% endblock %}

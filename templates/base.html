@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Pharmacy Inventory{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-brand">💊 Pharmacy Inventory</div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('inventory.view_inventory') }}">Inventory</a>
+      <a href="{{ url_for('inventory.add_batch') }}">Add Batch</a>
+      <a href="{{ url_for('dispensing.dispense') }}">Dispense</a>
+      <a href="{{ url_for('search.search') }}">Search</a>
+      <a href="{{ url_for('alerts.alerts') }}">Alerts</a>
+      <a href="{{ url_for('importer.do_import') }}">Import</a>
+      <a href="{{ url_for('notifications.outbox_list') }}">Outbox</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

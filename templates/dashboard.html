@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Pharmacy Inventory{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">{{ stats.total_medicines }}</div>
+    <div class="stat-label">Distinct Medicines</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ stats.total_batches }}</div>
+    <div class="stat-label">Total Batches</div>
+  </div>
+  <div class="stat-card stat-good">
+    <div class="stat-value">{{ stats.sellable_stock }}</div>
+    <div class="stat-label">Sellable Stock (in-date)</div>
+  </div>
+  <div class="stat-card stat-warning">
+    <div class="stat-value">{{ stats.expiring_soon }}</div>
+    <div class="stat-label">Batches Expiring Soon</div>
+  </div>
+  <div class="stat-card stat-danger">
+    <div class="stat-value">{{ stats.expired_batches }}</div>
+    <div class="stat-label">Expired Batches</div>
+  </div>
+</div>
+
+<div class="button-row">
+  <a class="btn" href="{{ url_for('inventory.add_batch') }}">+ Add Batch</a>
+  <a class="btn" href="{{ url_for('dispensing.dispense') }}">Dispense Medicine</a>
+  <a class="btn" href="{{ url_for('search.search') }}">Search Medicine</a>
+  <a class="btn" href="{{ url_for('alerts.alerts') }}">View Alerts</a>
+  <a class="btn" href="{{ url_for('importer.do_import') }}">Import CSV</a>
+  <a class="btn" href="{{ url_for('notifications.outbox_list') }}">Outbox</a>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Import Batches - Pharmacy Inventory{% endblock %}
+
+{% block content %}
+<h1>Import Batches (CSV)</h1>
+<p>Paste or upload a messy CSV. Columns: <strong>medicine_name, batch_number, quantity, expiry_date</strong></p>
+<p class="hint">Handles nulls, quantities like <code>10 units</code>, dates as ISO or <code>dd/mm/yyyy</code>, and duplicate rows.</p>
+
+<form method="post" enctype="multipart/form-data" class="card form-card">
+  <div class="form-group">
+    <label for="csv_data">Paste CSV data</label>
+    <textarea id="csv_data" name="csv_data" rows="10" placeholder="medicine_name,batch_number,quantity,expiry_date&#10;Paracetamol,B001,10 units,2026-12-31"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="file">Or upload CSV file</label>
+    <input type="file" id="file" name="file" accept=".csv,text/csv" />
+  </div>
+  <button type="submit" class="btn">Import</button>
+</form>
+
+{% if report %}
+<div class="card report-card">
+  <h2>Import Report</h2>
+  <div class="stats-grid">
+    <div class="stat-card stat-good">
+      <div class="stat-value">{{ report.imported }}</div>
+      <div class="stat-label">Imported</div>
+    </div>
+    <div class="stat-card stat-warning">
+      <div class="stat-value">{{ report.deduped }}</div>
+      <div class="stat-label">Deduped</div>
+    </div>
+    <div class="stat-card stat-danger">
+      <div class="stat-value">{{ report.rejected }}</div>
+      <div class="stat-label">Rejected</div>
+    </div>
+  </div>
+
+  {% if report.rejected_items %}
+  <h3>Rejected rows (sample)</h3>
+  <table>
+    <thead><tr><th>Row</th><th>Raw data</th></tr></thead>
+    <tbody>
+      {% for item in report.rejected_items %}
+      <tr><td>{{ item.row }}</td><td><code>{{ item.raw }}</code></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  {% if report.deduped_items %}
+  <h3>Merged into existing batches (sample)</h3>
+  <table>
+    <thead><tr><th>Medicine</th><th>Batch</th><th>Added</th><th>New qty</th></tr></thead>
+    <tbody>
+      {% for item in report.deduped_items %}
+      <tr>
+        <td>{{ item.medicine_name }}</td>
+        <td>{{ item.batch_number }}</td>
+        <td>{{ item.added }}</td>
+        <td>{{ item.new_quantity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

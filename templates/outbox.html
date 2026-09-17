@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Notification Outbox - Pharmacy Inventory{% endblock %}
+
+{% block content %}
+<h1>Re-order Alert Outbox</h1>
+<p class="hint">Messages sent when in-date stock drops to the reorder threshold. API: <code>GET /outbox</code> (JSON)</p>
+
+{% if messages %}
+<table>
+  <thead>
+    <tr>
+      <th>Time (UTC)</th>
+      <th>Medicine</th>
+      <th>Current qty</th>
+      <th>Threshold</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for msg in messages %}
+    <tr>
+      <td>{{ msg.timestamp }}</td>
+      <td>{{ msg.medicine_name }}</td>
+      <td>{{ msg.current_quantity }}</td>
+      <td>{{ msg.threshold }}</td>
+      <td>{{ msg.message }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No re-order alerts yet.</p>
+{% endif %}
+{% endblock %}

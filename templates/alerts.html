@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Alerts - Pharmacy Inventory{% endblock %}
+
+{% block content %}
+<h1>Expiry Alerts</h1>
+<p>Batches expiring within the next {{ window_days }} days (and still in stock).</p>
+
+{% if rows %}
+<table class="data-table">
+  <thead>
+    <tr><th>Medicine</th><th>Batch</th><th>Quantity</th><th>Expiry</th></tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.medicine_name }}</td>
+      <td>{{ row.batch_number }}</td>
+      <td>{{ row.quantity }}</td>
+      <td>{{ row.expiry_date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>✅ No batches expiring soon.</p>
+{% endif %}
+{% endblock %}

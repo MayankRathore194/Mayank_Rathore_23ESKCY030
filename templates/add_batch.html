@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Add Batch - Pharmacy Inventory{% endblock %}
+
+{% block content %}
+<h1>Add Medicine Batch</h1>
+
+<form method="POST" class="form-card">
+  <label for="medicine_name">Medicine Name</label>
+  <input type="text" id="medicine_name" name="medicine_name"
+         value="{{ form.get('medicine_name', '') }}" required autofocus />
+
+  <label for="batch_number">Batch Number</label>
+  <input type="text" id="batch_number" name="batch_number"
+         value="{{ form.get('batch_number', '') }}" required />
+
+  <label for="quantity">Quantity</label>
+  <input type="number" id="quantity" name="quantity" min="0"
+         value="{{ form.get('quantity', '') }}" required />
+
+  <label for="expiry_date">Expiry Date</label>
+  <input type="date" id="expiry_date" name="expiry_date"
+         value="{{ form.get('expiry_date', '') }}" required />
+
+  <button type="submit" class="btn">Add Batch</button>
+</form>
+{% endblock %}

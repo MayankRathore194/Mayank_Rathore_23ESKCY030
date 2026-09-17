@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Inventory - Pharmacy Inventory{% endblock %}
+
+{% block content %}
+<h1>Inventory</h1>
+<p><a class="btn" href="{{ url_for('inventory.add_batch') }}">+ Add Batch</a></p>
+
+{% if rows %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Medicine</th>
+      <th>Batch</th>
+      <th>Quantity</th>
+      <th>Expiry</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr class="{{ 'row-expired' if row.status == 'Expired' else '' }}">
+      <td>{{ row.medicine_name }}</td>
+      <td>{{ row.batch_number }}</td>
+      <td>{{ row.quantity }}</td>
+      <td>{{ row.expiry_date }}</td>
+      <td>
+        <span class="badge badge-{{ 'expired' if row.status == 'Expired' else 'valid' }}">{{ row.status }}</span>
+        {% if row.quarantined %}<span class="badge badge-expired">Quarantined</span>{% endif %}
+        {% if row.expiring_flagged and not row.quarantined %}<span class="badge badge-warning">Expiring soon</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No batches yet. <a href="{{ url_for('inventory.add_batch') }}">Add the first one.</a></p>
+{% endif %}
+{% endblock %}
